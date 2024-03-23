@@ -13,69 +13,48 @@
 module.exports = grammar({
   name: "gin",
   rules: {
-    source_file: ($) => repeat($.expression),
+    source_file: ($) => repeat($._node),
+
     // comment: ($) => token(choice(seq("#", /.*/), seq("//", /.*/))),
-    expression: ($) =>
-      choice($.literal, $.function_definition, $.function_call),
-
-    // identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
-    identifier: ($) => /[A-z]+/,
-
-    literal_number: ($) => /\d+/,
-
-    // Define a rule for parsing escape sequences within strings
-    escape_sequence: ($) =>
-      token.immediate(
-        seq(
-          "\\",
-          choice(
-            /["\\]/, // Match double quote or backslash
-            /u\{[0-9a-fA-F]+\}/ // Match Unicode code point escape
-            // Add more escape sequences as needed
-          )
-        )
+    function_call: ($) =>
+      choice(
+        prec.right(seq($.identifier, $._space, optional($._expression))),
+        $.identifier
       ),
+    function_definition: ($) =>
+      prec.right(seq(
+        $.identifier,
+        optional(seq($.identifier, optional($.type))),
+        ":",
+        choice($._block, $._expression)
+      )),
 
-    literal_string: ($) =>
+    _space: ($) => /\s/,
+    _statement: ($) => choice($.function_definition, $.include),
+    _expression: ($) => choice($._literal, $.function_call),
+    _node: ($) => choice($._statement, $._expression),
+    _literal: ($) => choice($.string, $.number, $.data, $.list),
+    _block: ($) => repeat1(seq(repeat1($._indent), $._node)),
+
+    identifier: ($) => /[a-z][a-z0-9]*([A-Z][a-z0-9]*)*/,
+    type: ($) => /[A-Z][a-zA-Z0-9]*/,
+    number: ($) => /\d+/,
+    list: ($) => seq("[", commaSep($._expression), "]"),
+    string: ($) =>
       seq(
         "'", // Single quote to start the string
         /[^'\n\r]*[^\\]'/ // Characters between quotes (excluding escape sequences)
       ),
+    include: ($) => seq("include"),
 
-    literal_list: ($) => seq("[", commaSep($.argument), "]"),
-
-    literal_data: ($) =>
-      // identifier in this {value} is just shorthand for {value: value}
-      // but we can't allow an arg so no $.function_call {value arg}? != {value}
-      // you have to {value: value arg, y: 'thing'}
+    // identifier in this {value} is just shorthand for {value: value}
+    // but we can't allow an arg so no $.function_call {value arg}? != {value}
+    // you have to {value: value arg, y: 'thing'}
+    data: ($) =>
       seq("{", commaSep(choice($.function_definition, $.identifier)), "}"),
 
-    literal: ($) => choice($.literal_string, $.literal_number, $.literal_data),
-
-    // data: ($) => seq("{", commaSep(optional(choice($.identifier))), "}"),
-
-    // _type: ($) => choice("bool", "string", "number"),
-
-    // Define rules for handling indentation
-    indent: ($) => token(choice("  ", "\t")),
-    newline: ($) => "\n",
-    // dedent: ($) => token(prec(-1, choice("  ", "\t"))),
-
-    // Define a rule for indented blocks
-    indented_block: ($) => seq($.indent, repeat($.expression), $.newline),
-
-    argument: ($) => choice($.function_call, $.literal),
-
-    function_definition: ($) =>
-      seq(
-        $.identifier,
-        // optional(choice($.identifier, optional($._type))),
-        ":",
-        choice($.indented_block, $.argument)
-      ),
-
-    function_call: ($) =>
-      prec.right(seq($.identifier, optional(choice($.argument)))),
+    _indent: ($) => token(choice("  ", "\t")),
+    //newline: ($) => "\n",
   },
 });
 

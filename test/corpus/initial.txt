@@ -7,9 +7,7 @@ literal string
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (literal
-      (literal_string))))
+    (string))
 
 ================================================================================
 literal number
@@ -20,9 +18,7 @@ literal number
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (literal
-      (literal_number))))
+  (number))
 
 ================================================================================
 literal data
@@ -33,24 +29,13 @@ literal data
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (literal
-      (literal_data
-        (function_definition
-          (identifier)
-          (argument
-            (literal
-              (literal_number))))
-        (function_definition
-          (identifier)
-          (argument
-            (literal
-              (literal_string)
-              )
-          )
-        )
-      
-      ))))
+  (data
+    (function_definition
+      (identifier)
+      (number))
+    (function_definition
+      (identifier)
+        (string))))
 
 ================================================================================
 empty data
@@ -61,9 +46,7 @@ empty data
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (literal
-      (literal_data))))
+  (data))
 
 ================================================================================
 data with shorthand fill
@@ -76,37 +59,23 @@ a: 10
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (function_definition
-    (identifier)
-    (argument
-        (literal
-          (literal_number)))
-    )
-  )
-  (expression
-    (literal
-      (literal_data
-      (identifier)
-        )
-    )
-  )
-)
+  (function_definition
+  (identifier)
+      (number))
+  (data
+    (identifier)))
+  
 
 ================================================================================
 empty list
 ================================================================================
 
-[ ]
+[]
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (literal
-      (literal_list
-    
-))))
+  (list))
 
 
 ================================================================================
@@ -118,16 +87,9 @@ literal list
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (literal
-      (literal_list
-        (argument
-            (literal
-              (literal_string)))
-        (argument
-            (literal
-              (literal_string)))
-))))
+  (list
+    (string)
+    (string)))
 
 
 ================================================================================
@@ -139,9 +101,8 @@ sayHi
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
     (function_call
-    (identifier))))
+      (identifier)))
 
 
 ================================================================================
@@ -153,32 +114,89 @@ sayHi: 'hi'
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (function_definition
+  (function_definition
     (identifier)
-    (argument
-        (literal
-          (literal_string))))))
+    (string)))
 
 ================================================================================
 multi-line function
 ================================================================================
 
 sayHi:
-    'hi'
+  'hi'
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (function_definition
+  (function_definition
     (identifier)
-    (indented_block
-      (indent)
-      (expression
-        (literal
-          (literal_string)))
-          (newline)))))
+    (string)))
+
+          
+================================================================================
+function call function
+================================================================================
+
+print a
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_call
+    (identifier)
+    (function_call
+      (identifier))))
+
+
+================================================================================
+define and call
+================================================================================
+
+a: 10
+
+a
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (number))
+  (function_call
+      (identifier)))
+
+
+================================================================================
+call after call
+================================================================================
+
+
+print reverse 'asd'
+
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_call
+    (identifier)
+    (function_call
+      (identifier)
+      (string))))
+
+
+================================================================================
+invalid function def
+================================================================================
+
+do:
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (function_call
+	  (identifier))
+	  (ERROR))
 
 
 ================================================================================
@@ -194,45 +212,36 @@ do:
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (function_definition
-      (identifier)
-      (indented_block
-        (indent)
-        (expression
+  (function_definition
+    (identifier)
+      (function_definition
+				(identifier)
           (function_definition
-            (identifier)
-              (indented_block
-                (indent)
-                (expression
-                  (function_definition
-                    (identifier)
-                    (argument
-                      (literal
-                        (literal_string)))))
-                (newline))))
-                (expression
-                  (function_call
-                    (identifier)))
-                  (newline))))
-                  (expression
-                    (function_call
-                    (identifier))))
+				    (identifier)
+				      (string))
+        (function_call
+				  (identifier))
+				(function_call
+				  (identifier)))))
 
 ================================================================================
-function call function
+function with argument
 ================================================================================
 
-print a
+printName name:
+    print name 
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (expression
-    (function_call
-      (identifier)
-      (argument
-    (function_call
-      (identifier))))))
-
-
+  (function_definition
+    (identifier)
+      (function_definition
+				(identifier)
+          (function_definition
+				    (identifier)
+				      (string))
+        (function_call
+				  (identifier))
+				(function_call
+				  (identifier)))))

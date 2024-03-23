@@ -1,41 +1,18 @@
 [
   {
-    "type": "argument",
+    "type": "data",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "literal",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "function_call",
-          "named": true
-        },
         {
           "type": "function_definition",
           "named": true
         },
         {
-          "type": "literal",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -50,11 +27,27 @@
       "required": true,
       "types": [
         {
-          "type": "argument",
+          "type": "data",
+          "named": true
+        },
+        {
+          "type": "function_call",
           "named": true
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         }
       ]
@@ -69,74 +62,13 @@
       "required": true,
       "types": [
         {
-          "type": "argument",
+          "type": "data",
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "function_call",
           "named": true
         },
-        {
-          "type": "indented_block",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "indented_block",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expression",
-          "named": true
-        },
-        {
-          "type": "indent",
-          "named": true
-        },
-        {
-          "type": "newline",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "literal",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "literal_data",
-          "named": true
-        },
-        {
-          "type": "literal_number",
-          "named": true
-        },
-        {
-          "type": "literal_string",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "literal_data",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
         {
           "type": "function_definition",
           "named": true
@@ -144,14 +76,65 @@
         {
           "type": "identifier",
           "named": true
+        },
+        {
+          "type": "include",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
         }
       ]
     }
   },
   {
-    "type": "literal_string",
+    "type": "include",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "data",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "source_file",
@@ -162,11 +145,40 @@
       "required": false,
       "types": [
         {
-          "type": "expression",
+          "type": "data",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "function_definition",
+          "named": true
+        },
+        {
+          "type": "include",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "string",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "'",
@@ -193,15 +205,15 @@
     "named": true
   },
   {
-    "type": "indent",
+    "type": "include",
+    "named": false
+  },
+  {
+    "type": "number",
     "named": true
   },
   {
-    "type": "literal_number",
-    "named": true
-  },
-  {
-    "type": "newline",
+    "type": "type",
     "named": true
   },
   {
